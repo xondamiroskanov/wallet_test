@@ -27,7 +27,6 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         if (nowTime != null) {
           walledMonthTime = nowTime;
-
         }
       });
     });
@@ -85,7 +84,7 @@ class _HomePageState extends State<HomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Xarajatlar ro'yxatini ko'rish"),
+                  Text("Xarajatlar ro'yxatini ko'rish!"),
                   Switch(
                       value: isLand,
                       onChanged: (value) {
