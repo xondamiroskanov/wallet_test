@@ -79,6 +79,7 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color(0xFF6CA0FF),
         title: Text("Mening hamyonim"),
       ),
+
       body: Column(
         children: [
           WalletMonthDate(walletMonth, walledMonthTime),
