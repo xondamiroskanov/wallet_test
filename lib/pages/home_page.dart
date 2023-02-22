@@ -13,6 +13,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   DateTime walledMonthTime = DateTime.now();
+
   CostesModel costesModel = CostesModel();
 
   void walletMonth(BuildContext context) {
