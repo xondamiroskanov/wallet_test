@@ -84,11 +84,12 @@ class _HomePageState extends State<HomePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Xarajatlar ro'yxatini ko'rish!"),
+                  Text("Xarajatlar ro'yxati ni ko'rish!"),
                   Switch(
                       value: isLand,
                       onChanged: (value) {
                         setState(() {
+
                           isLand = value;
                         });
                       }),
