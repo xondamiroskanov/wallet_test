@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           WalletMonthDate(walletMonth, walledMonthTime),
           SizedBox(
-            height: 22,
+            height: 20,
           ),
           TotalCost(costesModel.totalCostMonth(walledMonthTime), previousMonth, nextMonth, walledMonthTime),
           const SizedBox(
