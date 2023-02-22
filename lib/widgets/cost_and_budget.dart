@@ -6,7 +6,8 @@ class CostAndBudget extends StatelessWidget {
 final List<Costes> costesModel;
 final double totalCostMonth;
 final Function delete;
-CostAndBudget(this.totalCostMonth, this.costesModel,this.delete);
+
+CostAndBudget(this.totalCostMonth, this.costesModel,this.delete,);
   @override
   Widget build(BuildContext context) {
     return Stack(

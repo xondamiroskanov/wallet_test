@@ -21,15 +21,16 @@ class CostesModel {
     Costes(title: "Obed", id: "c2", cost: "15000", time: DateTime.now()),
     Costes(title: "Cola", id: "c3", cost: "10000", time: DateTime.now()),
     Costes(title: "Kechki", id: "c4", cost: "12000", time: DateTime.now()),
+
   ];
 
   List<Costes> costList() {
     return _costList;
   }
 
-  void addNewCost(String title, String cost, DateTime time) {
+  void addNewCost(String title, String cost, DateTime time,IconData iconData) {
     _costList.add(Costes(
-        title: title, id: "${costList().length + 1}", cost: cost, time: time));
+        title: title, id: "${costList().length + 1}", cost: cost, time: time,iconData: iconData));
   }
 
   double totalCostMonth(DateTime costMonthTime) {
@@ -50,4 +51,5 @@ class CostesModel {
       return deleteId.id == id;
     });
   }
+
 }

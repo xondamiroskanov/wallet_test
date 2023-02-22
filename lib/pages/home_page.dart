@@ -13,15 +13,15 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   DateTime walledMonthTime = DateTime.now();
-
   CostesModel costesModel = CostesModel();
+  bool isLand = false;
 
   void walletMonth(BuildContext context) {
     showMonthPicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2020),
-        lastDate: DateTime(2025))
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2020),
+            lastDate: DateTime(2025))
         .then((nowTime) {
       setState(() {
         if (nowTime != null) {
@@ -43,9 +43,7 @@ class _HomePageState extends State<HomePage> {
 
   void nextMonth() {
     if (walledMonthTime.year == 4 &&
-        walledMonthTime.month == DateTime
-            (2025)
-            .month) {
+        walledMonthTime.month == DateTime(2025).month) {
       return;
     }
     setState(() {
@@ -56,43 +54,158 @@ class _HomePageState extends State<HomePage> {
 
   void addModalCost(BuildContext context) {
     showModalBottomSheet(
+        isDismissible: false,
         context: context,
         builder: (context) {
-          return AddModalBottomSheet(addCost);
+          return AddModalBottomSheet(
+            addCost,
+          );
         });
   }
 
-  void addCost(String title,  String cost, DateTime time){
+  void addCost(String title, String cost, DateTime time, IconData iconData) {
     setState(() {
-      costesModel.addNewCost(title, cost, time);
+      costesModel.addNewCost(title, cost, time, iconData);
     });
   }
-  void delete(String id){
+
+  void delete(String id) {
     setState(() {
       costesModel.deleteCost(id);
     });
   }
+
+  Widget switchLandScape() {
+    return isLand
+        ? swatchConstAndBudget()
+        : Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Xarajatlar ro'yxatini ko'rish"),
+                  Switch(
+                      value: isLand,
+                      onChanged: (value) {
+                        setState(() {
+                          isLand = value;
+                        });
+                      }),
+                ],
+              ),
+              WalletMonthDate(walletMonth, walledMonthTime),
+              const SizedBox(
+                height: 20,
+              ),
+              TotalCost(costesModel.totalCostMonth(walledMonthTime),
+                  previousMonth, nextMonth, walledMonthTime),
+            ],
+          );
+  }
+
+  Widget swatchConstAndBudget() {
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Xarajatlar ro'yxatini ko'rish"),
+            Switch(
+                value: isLand,
+                onChanged: (value) {
+                  setState(() {
+                    isLand = value;
+                  });
+                }),
+          ],
+        ),
+        CostAndBudget(
+          costesModel.totalCostMonth(walledMonthTime),
+          costesModel.dateCost(walledMonthTime),
+          delete,
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFF6CA0FF),
         title: Text("Mening hamyonim"),
       ),
-
-      body: Column(
-        children: [
-          WalletMonthDate(walletMonth, walledMonthTime),
-          SizedBox(
-            height: 20,
-          ),
-          TotalCost(costesModel.totalCostMonth(walledMonthTime), previousMonth, nextMonth, walledMonthTime),
-          const SizedBox(
-            height: 32,
-          ),
-          // Bu fayl ummumiy xarajatlar va oylik yozilgan
-          CostAndBudget(costesModel.totalCostMonth(walledMonthTime), costesModel.dateCost(walledMonthTime),delete)
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            isLandscape
+                ? switchLandScape()
+                : Center(
+                    child: Column(
+                      children: [
+                        WalletMonthDate(walletMonth, walledMonthTime),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TotalCost(costesModel.totalCostMonth(walledMonthTime),
+                            previousMonth, nextMonth, walledMonthTime),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        CostAndBudget(
+                          costesModel.totalCostMonth(walledMonthTime),
+                          costesModel.dateCost(walledMonthTime),
+                          delete,
+                        ),
+                      ],
+                    ),
+                  ),
+            // ? Column(
+            //     children: [
+            //       Row(
+            //         mainAxisAlignment: MainAxisAlignment.center,
+            //         children: [
+            //           Text("Xarajatlar ro'yxatini ko'rish"),
+            //           Switch(
+            //               value: isLand,
+            //               onChanged: (value) {
+            //                 setState(() {
+            //                   isLand = value;
+            //                 });
+            //               }),
+            //         ],
+            //       ),
+            //       WalletMonthDate(walletMonth, walledMonthTime),
+            //       SizedBox(
+            //         height: 20,
+            //       ),
+            //       TotalCost(costesModel.totalCostMonth(walledMonthTime),
+            //           previousMonth, nextMonth, walledMonthTime),
+            //     ],
+            //   )
+            // : Column(
+            //     children: [
+            //       WalletMonthDate(walletMonth, walledMonthTime),
+            //       SizedBox(
+            //         height: 20,
+            //       ),
+            //       TotalCost(costesModel.totalCostMonth(walledMonthTime),
+            //           previousMonth, nextMonth, walledMonthTime),
+            //       CostAndBudget(
+            //         costesModel.totalCostMonth(walledMonthTime),
+            //         costesModel.dateCost(walledMonthTime),
+            //         delete,
+            //       ),
+            //     ],
+            //   ),
+            const SizedBox(
+              height: 32,
+            ),
+            // Bu fayl ummumiy xarajatlar va oylik yozilgan
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

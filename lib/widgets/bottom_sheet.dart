@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:intl/intl.dart';
 
 class AddModalBottomSheet extends StatefulWidget {
   final Function addNewCost;
-
+  IconData? iconData;
   AddModalBottomSheet(this.addNewCost);
 
   @override
@@ -36,10 +37,16 @@ class _AddModalBottomSheetState extends State<AddModalBottomSheet> {
         nowDate == null) {
       return;
     }
-      widget.addNewCost(titleContoller.text, costController.text, nowDate);
+    widget.addNewCost(titleContoller.text, costController.text, nowDate, widget.iconData);
     Navigator.of(context).pop();
   }
-
+  void chooseIcon(BuildContext context) {
+    FlutterIconPicker.showIconPicker(context).then((icon) => setState(() {
+      if (icon != null) {
+        widget.iconData = icon;
+      }
+    }));
+  }
   @override
   Widget build(BuildContext context) {
     print(titleContoller.text);
@@ -85,6 +92,29 @@ class _AddModalBottomSheetState extends State<AddModalBottomSheet> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              widget.iconData == null
+                  ? Text(
+                      "Icon tanlang",
+                      style: TextStyle(fontSize: 14),
+                    )
+                  : Icon(widget.iconData),
+              TextButton(
+                onPressed: () {
+                  chooseIcon(context);
+                },
+                child: Text(
+                  "Icon tanlanmagan",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 12,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -98,7 +128,7 @@ class _AddModalBottomSheetState extends State<AddModalBottomSheet> {
                 child: Text("Kiritish"),
               ),
             ],
-          )
+          ),
         ],
       ),
     );
